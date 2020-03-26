@@ -1,12 +1,12 @@
 kubernetes-master-nodes:
   hosts:
     kubernetes-master.kienast:
-      ansible_host: 127.0.0.1
+      ansible_host: 192.168.56.142
   vars:
 
 kubernetes-worker-nodes:
   hosts:
     kubernetes-worker1.kienast:
-      ansible_host: 192.168.2.2
+      ansible_host: 192.168.56.140
     kubernetes-worker2.kienast:
-      ansible_host: 192.168.2.3
+      ansible_host: 192.168.56.139
