@@ -1,6 +1,0 @@
-[kubernetes-master-nodes]
-kubernetes-master.kienast ansible_host=127.0.0.1
-
-[kubernetes-worker-nodes]
-kubernetes-worker1.kienast ansible_host=192.168.2.2
-kubernetes-worker2.kienast ansible_host=192.168.2.3

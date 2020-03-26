@@ -4,11 +4,11 @@
   become: yes
   roles:
     - { role: roles/common } #Contains etc/hosts modifying and package installation
-    - { role: roles/sshpublishing }
-    - { role: roles/kubemaster }
+#    - { role: roles/sshpublishing }
+#    - { role: roles/kubemaster }
 - hosts: kubernetes-worker-nodes
   gather_facts: no
   become: yes
   roles:
     - { role: roles/common } #Contains etc/hosts modifying and package installation
-    - { role: roles/kubeworker }
+#    - { role: roles/kubeworker }

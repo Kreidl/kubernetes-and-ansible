@@ -1,2 +1,33 @@
 ---
 # tasks file for common
+- name: modify /etc/hosts file for master
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{hostvars[item]['ansible_host']}} {{item}}"
+  with_items: "{{ groups['kubernetes-master-nodes'] }}"
+- name: modify /etc/hosts file for worker
+  lineinfile:
+    dest: /etc/hosts
+    line: "{{hostvars[item]['ansible_host']}} {{item}}"
+  with_items: "{{ groups['kubernetes-worker-nodes'] }}"
+- name: update cache
+  apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+- name: install required packages
+  apt:
+     pkg:
+     - curl
+     - docker.io
+- name: Add the Kubernetes signing key
+  apt_key:
+     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+     state: present
+- name: Add Xenial Kubernetes Repository
+  apt_repository:
+   repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
+   state: present
+- name: install kuebeadmin
+  apt:
+    pkg:
+    - kubeadm
+- name: Disabling Swap on all nodes
+  shell: swapoff -a
