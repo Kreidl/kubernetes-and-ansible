@@ -1,2 +1,20 @@
 ---
 # tasks file for kubemaster
+- name: initialize Kubernetes
+  shell: |
+    kubeadm init --pod-network-cidr={{podcidr}} --apiserver-advertise-address {{ ansible_host }}
+- name: create .kube directory
+  file:
+    path: "{{hostvars[item]['ansible_user']}}/.kube"
+    state: directory
+    owner: "{{hostvars[item]['ansible_user']}}"
+    group: "{{hostvars[item]['ansible_user']}}"
+    mode: '0700'
+- name: copy config to new directory
+  copy:
+    src: /etc/kubernetes/admin.conf
+    remote_src: yes
+    dest: "{{hostvars[item]['ansible_user']}}/.kube/config"
+    owner: "{{hostvars[item]['ansible_user']}}"
+    group: "{{hostvars[item]['ansible_user']}}"
+    mode: '0600'

@@ -1,11 +1,11 @@
 ---
 # tasks file for common
-- name: modify /etc/hosts file for master
+- name: modify /etc/hosts file with master entry
   lineinfile:
     dest: /etc/hosts
     line: "{{hostvars[item]['ansible_host']}} {{item}}"
   with_items: "{{ groups['kubernetes-master-nodes'] }}"
-- name: modify /etc/hosts file for worker
+- name: modify /etc/hosts file with worker entry
   lineinfile:
     dest: /etc/hosts
     line: "{{hostvars[item]['ansible_host']}} {{item}}"
