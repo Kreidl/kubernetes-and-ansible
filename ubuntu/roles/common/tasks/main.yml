@@ -24,12 +24,21 @@
   apt_repository:
    repo: deb https://download.docker.com/linux/ubuntu bionic stable
    state: present
-- name: Update apt and install docker-ce
+- name: Update apt and install docker
   apt: update_cache=yes name=docker-ce state=latest
-#- name: enable docker service
-#  systemd:
-#    name: docker.service
-#    enabled: yes
+- name: detect docker's cgroup-driver
+  shell: docker info 2>/dev/null |grep -i cgroup | cut -d":" -f2 | tr -d " "
+  register: docker_cgroup_driver
+- replace:
+    path: /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
+    regexp: '--cgroup-driver=(systemd|cgroupfs)'
+    replace: '--cgroup-driver={{docker_cgroup_driver.stdout}}'
+    backup: no
+- name: start docker
+  service:
+    name: docker
+    state: restarted
+    enabled: yes
 - name: Add the Kubernetes signing key
   apt_key:
      url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
@@ -38,9 +47,10 @@
   apt_repository:
    repo: deb http://apt.kubernetes.io/ kubernetes-xenial main
    state: present
-- name: install kuebeadm
+- name: install kubeadm and kubectl
   apt:
     pkg:
     - kubeadm
+    - kubectl
 - name: Disabling Swap on all nodes
   shell: swapoff -a

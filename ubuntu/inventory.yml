@@ -8,6 +8,7 @@ kubernetes-master-nodes:
     ansible_become_user: root
     ansible_become_pass: Kienast
     podcidr: 10.244.0.0/16
+    token_file: join_token
 
 kubernetes-worker-nodes:
   hosts:
