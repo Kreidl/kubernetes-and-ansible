@@ -1,5 +1,8 @@
 ---
 # tasks file for common
+- name: set hostname
+  hostname:
+    name: "{{inventory_hostname}}"
 - name: modify /etc/hosts file with master entry
   lineinfile:
     dest: /etc/hosts
