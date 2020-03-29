@@ -16,4 +16,5 @@
     group: "{{ansible_user}}"
     mode: '0700'
 - name: join node to cluster
-  shell: "sudo ./join"
+  become: true
+  shell: "./join"

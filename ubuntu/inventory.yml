@@ -12,8 +12,6 @@ kubernetes-master-nodes:
 
 kubernetes-worker-nodes:
   hosts:
-    kubernetes-worker1.kienast:
-      ansible_host: 192.168.56.140
     kubernetes-worker2.kienast:
       ansible_host: 192.168.56.139
   vars:

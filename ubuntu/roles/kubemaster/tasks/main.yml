@@ -32,8 +32,22 @@
     owner: "{{ansible_user}}"
     group: "{{ansible_user}}"
     mode: '0600'
+- name: set KUBECONFIG
+  lineinfile:
+    dest: /etc/environment
+    state: present
+    insertbefore: 'PATH*'
+    regexp: '^KUBECONFIG'
+    line: "KUBECONFIG=/home/{{ansible_user}}/.kube/config"
+- name: reload environment vars
+  shell: . /etc/environment
 - name: restart kubelet
   service:
     name: kubelet
     state: restarted
     enabled: yes
+- name: initialize pod network
+#  ignore_errors: true
+  become: true
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
